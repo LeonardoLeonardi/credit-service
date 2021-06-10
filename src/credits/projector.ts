@@ -1,7 +1,10 @@
 import { runProjector } from "@keix/message-store-client";
 import { EventCredits, EventTypeCredit } from "./types";
 
-export async function runBalanceProjector(id: string): Promise<number> {
+export async function runBalanceProjector(
+  id: string,
+  untilPosition?: number
+): Promise<number> {
   const MAX_USE_CREDITS_DELAY = 365;
 
   let datetime = new Date();
@@ -16,5 +19,9 @@ export async function runBalanceProjector(id: string): Promise<number> {
     }
     return Math.max(0, res);
   }
-  return runProjector({ streamName: `creditAccount-${id}` }, reducer, 0);
+  return runProjector(
+    { streamName: `creditAccount-${id}`, untilPosition },
+    reducer,
+    0
+  );
 }
